@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import React from "react";
 import "@mysten/dapp-kit/dist/index.css";
 import NavBar from "./components/NavBar";
 
-const montserrat = Montserrat({ subsets: ["latin"] });
+const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"], });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,11 +19,13 @@ export default function RootLayout({
 }>) {
 
   return (
-    <html lang="en" className="flex flex-col">
-      <body className={`${montserrat.className} content`}>
+    <html lang="en" className="flex flex-col h-full">
+      <body className={`${poppins.className}`}>
+        <div className="blurry-circle bottom-left"></div>
+        {/* <div className="blurry-circle top-right"></div> */}
         {children}
         <NavBar />
-        </body>
+      </body>
     </html>
   );
 }

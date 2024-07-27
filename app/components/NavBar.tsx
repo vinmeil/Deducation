@@ -20,7 +20,7 @@ export default function NavBar() {
 
 function DashboardNavBar() {
     return (
-        <nav className = "w-full px-6 py-1 bg-[#29292b] fixed bottom-0 position-sticky z-50">
+        <nav className = "w-full px-6 py-4 bg-[#29292b] fixed bottom-0 position-sticky z-50">
           <div className="justify-between mx-auto px-2 gap-4 items-center flex">
             <Link href="/" className="flex gap-2 items-center w-full h-full p-1 justify-center border border-solid bg-[#26e400] bg-opacity-15 border-[#26e400] border-opacity-15 rounded-lg">
               <AiOutlineHome className="text-xl" style={{color:'#26e400', opacity:20}}/>

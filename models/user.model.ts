@@ -4,7 +4,7 @@ export interface IUser {
   _id: string;
   name: string;
   email: string;
-  batteries: IBattery[];
+  battery: IBattery;
   validatorPercentage: number;
   personalPercentage: number;
   isLoaning: boolean;
