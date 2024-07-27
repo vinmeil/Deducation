@@ -7,7 +7,7 @@ type CrowdFundCardProps = {
     crowdfund: ICrowdFund,
 }
 
-const BountyCard = ({ crowdfund }: CrowdFundCardProps) => {
+const CrowdFundCard = ({ crowdfund }: CrowdFundCardProps) => {
 
     return (
         <>
@@ -22,11 +22,13 @@ const BountyCard = ({ crowdfund }: CrowdFundCardProps) => {
                 <div className="flex p-2 w-full justify-between items-end">
                     <div className="flex">
                         <Image 
-                            src={require('@/models/sui-sui-logo.svg')} 
-                            width={24}
-                            alt="sui coin"
+                            src={require('@/models/klt.png')} 
+                            width={32}
+                            height={32}
+                            object-fit="contain"
+                            alt="Kilat Coin"
                             />
-                        <h1 className="p-2">{crowdfund.amountRequested}</h1>
+                        <h1 className="p-2">{crowdfund.amountRequested} KLT</h1>
                     </div>
                     <div>
                         <DonateButton />
@@ -37,4 +39,4 @@ const BountyCard = ({ crowdfund }: CrowdFundCardProps) => {
     );
 }
 
-export default BountyCard
+export default CrowdFundCard
