@@ -29,6 +29,7 @@ const Model = ({ isOpen, setIsOpen, isValidatorRunning, setIsValidatorRunning }:
     <div className="gap-4 flex-col">
       <Modal
         isOpen={isOpen}
+        ariaHideApp={false}
         onRequestClose={() => setIsOpen(false)}
         style={customStyles}
       >

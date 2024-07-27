@@ -1,6 +1,6 @@
 "use client";
 
-import { ConnectButton } from "@mysten/dapp-kit";
+import { ConnectButton, useCurrentAccount } from "@mysten/dapp-kit";
 import { BsFillLightningChargeFill } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import { mockUsers } from "@/data/mockData";
@@ -9,11 +9,18 @@ import { FaPlay, FaStop } from "react-icons/fa";
 import Modal from "../components/Modal";
 
 export default function Home() {
+  const currentAccount = useCurrentAccount();
+  
   const user = mockUsers[1];
+  const [isUserConnected, setIsUserConnected] = useState<boolean>(currentAccount !== null);
   const [batteryPercentage, setBatteryPercentage] = useState<number>(0);
   const [validatorPercentage, setValidatorPercentage] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isValidatorRunning, setIsValidatorRunning] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsUserConnected(currentAccount !== null);
+  }, [currentAccount])
 
   useEffect(() => {
     if (!user) return;
@@ -45,8 +52,12 @@ export default function Home() {
       {/* Name & Wallet */}
       <div className="flex flex-row justify-between items-center gap-2">
         <div className="flex flex-col truncate">
-          <p className="font-bold truncate">0x972qebnfyoasiyf982qewio</p>
-          <p className="text-sm font-semibold">104.8 KLT</p>
+          {isUserConnected && (
+            <>
+              <p className="font-bold truncate max-w-[200px]">0x972qebnfyoasiyf982qewio17yn7y89hDA&DTe10ey319e9</p>
+              <p className="text-sm font-semibold">104.8 KLT</p>
+            </>
+          )}
         </div>
         <ConnectButton />
       </div>
