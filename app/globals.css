@@ -54,3 +54,20 @@ h6 {
 #__next {
   isolation: isolate;
 }
+
+[data-dapp-kit].AccountDropdownMenu_menuItem__div2ql3,
+[data-dapp-kit] .AccountDropdownMenu_menuItem__div2ql3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+[data-dapp-kit].AccountDropdownMenu_connectedAccount__div2ql0 > div,
+[data-dapp-kit] .AccountDropdownMenu_connectedAccount__div2ql0 > div {
+  gap: 8px;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+}

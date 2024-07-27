@@ -22,8 +22,8 @@ export default function RootLayout({
         <QueryClientProvider client={queryClient}>
           <SuiClientProvider networks={networkConfig} defaultNetwork="testnet">
             <WalletProvider autoConnect>
+              <div className="">{children}</div>
               <NavBar />
-              <div className={`mt-[80px]`}>{children}</div>
             </WalletProvider>
           </SuiClientProvider>
         </QueryClientProvider>
