@@ -51,7 +51,6 @@ export function CreateCounter({
       },
       {
         onSuccess: (result) => {
-          console.log("Successful");
           const objectId = result.effects?.created?.[0]?.reference?.objectId;
           if (objectId) {
             onCreated(objectId);
