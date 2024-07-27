@@ -19,13 +19,13 @@
 body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  color: #040316;
+  color: #ebe9fc;
   background: linear-gradient(
       to bottom,
       transparent,
-      #ebebeb
+      #181818
     )
-    #ebebeb;
+    #181818;
 }
 img,
 picture,
