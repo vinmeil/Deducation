@@ -3,10 +3,10 @@ export const links = [
     href: '/'
   },
   {
-    name: 'Courses',
-    href: '/courses',
+    name: 'Crowdfund',
+    href: '/crowdfund',
   },
-  { name: 'Bounties', 
-    href: '/bounties', 
+  { name: 'Profile', 
+    href: '/profile', 
   },
 ];
