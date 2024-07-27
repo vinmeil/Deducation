@@ -1,23 +1,19 @@
 "use client";
 
-import { ConnectButton, useCurrentAccount } from "@mysten/dapp-kit";
-import { isValidSuiObjectId } from "@mysten/sui/utils";
-import { Box, Container, Flex, Heading } from "@radix-ui/themes";
-import { useState } from "react";
-import { Counter } from "../../sui/Counter";
-import { CreateCounter } from "../../sui/CreateCounter";
+import { ConnectButton } from "@mysten/dapp-kit";
+import { BsFillLightningChargeFill } from "react-icons/bs";
+import { useEffect, useState } from "react";
 import { mockUsers } from "@/data/mockData";
 
 export default function Home() {
   const user = mockUsers[0];
+  const [batteryPercentage, setBatteryPercentage] = useState<string>("0");
 
-  const currentAccount = useCurrentAccount();
-  // const [counterId, setCounter] = useState(() => {
-  //   const hash = window.location.hash.slice(1);
-  //   return isValidSuiObjectId(hash) ? hash : null;
-  // });
-
-  console.log(currentAccount)
+  useEffect(() => {
+    if (user?.battery) {
+      setBatteryPercentage(((user.battery.currentCapacity / user.battery.maxCapacity) * 100).toFixed(2));
+    }
+  }, []);
 
   return (
     <div className="flex flex-col m-3">
@@ -32,36 +28,28 @@ export default function Home() {
 
       {/* Batteries */}
       <div className="mt-[40px]">
-        {user?.batteries.length > 0 && (
+        {user?.battery && (
           <div className="flex flex-col gap-6 w-full">
-            {user?.batteries.map((battery) => {
-              const capacityPercentage = ((battery.currentCapacity / battery.maxCapacity) * 100).toFixed(2);
-
-              return (
-                <div className="flex flex-col gap-2">
-                  <div className="flex gap-2">
-                    <p className="font-bold">{battery.name}</p>
-                    <p className="text-sm">{`${capacityPercentage}%`}</p>
-                  </div>
+            <div className="flex flex-col gap-2">
+              <div className="flex gap-2">
+                <p className="font-bold">Battery Percentage</p>
+              </div>
+              <div className="flex flex-row gap-3 w-full items-center">
+                <BsFillLightningChargeFill />
+                <div
+                  className="bg-secondary bg-opacity-20 rounded-lg h-[30px] p-1 relative w-full"
+                >
+                  <span className="absolute inset-0 flex items-center justify-center mix-blend-difference">
+                    {batteryPercentage}%
+                  </span>
                   <div
-                    key={battery._id}
-                    className="bg-secondary bg-opacity-20 rounded-lg h-[30px] p-1 relative"
+                    className="bg-gradient-to-r from-primary to-accent h-full rounded-lg"
+                    style={{ width: `${batteryPercentage}%` }}
                   >
-                    <span className="absolute inset-0 flex items-center justify-center text-white">
-                      {capacityPercentage}%
-                    </span>
-                    <div
-                      className="bg-gradient-to-r from-primary to-accent h-full rounded-lg"
-                      style={{ width: `${capacityPercentage}%` }}
-                    >
-                      <span className="absolute inset-0 flex items-center justify-center text-background">
-                        {capacityPercentage}%
-                      </span>
-                    </div>
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            </div>
           </div>
         )}
       </div>
