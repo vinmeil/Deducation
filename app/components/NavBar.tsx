@@ -8,7 +8,7 @@ import { CgProfile } from "react-icons/cg";
 export default function NavBar() {
 
   return (
-    <nav className = "w-full p-6 dark:bg-gray-900 fixed bottom-0 position-sticky z-50">
+    <nav className = "w-full px-6 py-4 bg-[#29292b] fixed bottom-0 position-sticky z-50">
       <div className="justify-between mx-auto px-2 items-center flex">
         <Link href="/">
           <AiOutlineHome className="text-5xl" style={{color:'white'}}/>
