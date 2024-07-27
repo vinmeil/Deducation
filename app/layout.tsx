@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
 import React from "react";
 import "@mysten/dapp-kit/dist/index.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,7 +19,7 @@ export default function RootLayout({
 
   return (
     <html lang="en" className="flex flex-col">
-      <body className={`${inter.className} content`}>{children}</body>
+      <body className={`${montserrat.className} content`}>{children}</body>
     </html>
   );
 }
