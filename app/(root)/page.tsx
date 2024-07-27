@@ -1,6 +1,6 @@
 "use client";
 
-import { ConnectButton, useCurrentAccount } from "@mysten/dapp-kit";
+import { ConnectButton, useCurrentAccount, useSuiClient } from "@mysten/dapp-kit";
 import { BsFillLightningChargeFill } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import { mockUsers } from "@/data/mockData";
@@ -9,23 +9,19 @@ import { FaPlay, FaStop } from "react-icons/fa";
 import Modal from "../components/Modal";
 
 export default function Home() {
-  const currentAccount = useCurrentAccount();
-  
   const user = mockUsers[1];
-  const [isUserConnected, setIsUserConnected] = useState<boolean>(currentAccount !== null);
+  const suiClient = useSuiClient();
+  const account = useCurrentAccount();
   const [batteryPercentage, setBatteryPercentage] = useState<number>(0);
   const [validatorPercentage, setValidatorPercentage] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isValidatorRunning, setIsValidatorRunning] = useState<boolean>(false);
-
-  useEffect(() => {
-    setIsUserConnected(currentAccount !== null);
-  }, [currentAccount])
+  const [kilatBalance, setKilatBalance] = useState<string>("");
 
   useEffect(() => {
     if (!user) return;
     
-    if (user?.battery) {
+    if (user.battery) {
       setBatteryPercentage(Number(((user.battery.currentCapacity / user.battery.maxCapacity) * 100).toFixed(2)));
     }
 
@@ -46,19 +42,35 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [isValidatorRunning]);
 
-  return (
+  useEffect(() => {
+    async function fetchKilatBalance() {
+      if (account) {
+        try {
+          const KILAT_COIN = "0x6c4c3682fd01485f968052d86ba23ec55b6698d47471fd9258007234f600e592::kilat_coin::KILAT_COIN";
 
+          const balance = await suiClient.getBalance({
+            owner: account.address,
+            coinType: KILAT_COIN,
+          });
+
+          setKilatBalance(balance.totalBalance);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
+
+    fetchKilatBalance();
+  }, [suiClient, account])
+
+  return (
     <div className="flex flex-col m-3 h-full">
       {/* Name & Wallet */}
       <div className="flex flex-row justify-between items-center gap-2">
-        <div className="flex flex-col truncate">
-          {isUserConnected && (
-            <>
-              <p className="font-bold truncate max-w-[200px]">0x972qebnfyoasiyf982qewio17yn7y89hDA&DTe10ey319e9</p>
-              <p className="text-sm font-semibold">104.8 KLT</p>
-            </>
-          )}
-        </div>
+        {account && <div className="flex flex-col truncate">
+          <p className="font-bold truncate max-w-[200px]">{account.address}</p>
+          <p className="text-sm font-semibold">{Number(kilatBalance) / 10 ** 3} KLT</p>
+        </div>}
         <ConnectButton />
       </div>
 
@@ -166,7 +178,6 @@ export default function Home() {
         isValidatorRunning={isValidatorRunning}
         setIsValidatorRunning={setIsValidatorRunning}
       />
-
 
       <style jsx>{`
         .glow-button {
