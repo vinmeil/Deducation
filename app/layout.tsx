@@ -19,11 +19,13 @@ export default function RootLayout({
 }>) {
 
   return (
-    <html lang="en" className="flex flex-col">
-      <body className={`${montserrat.className} content`}>
+    <html lang="en" className="flex flex-col h-full">
+      <body className={`${montserrat.className}`}>
+        <div className="blurry-circle bottom-left"></div>
+        {/* <div className="blurry-circle top-right"></div> */}
         {children}
         <NavBar />
-        </body>
+      </body>
     </html>
   );
 }
