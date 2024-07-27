@@ -1,18 +1,25 @@
 "use client";
 
 import Link from 'next/link'
-import { links } from '@/app/constants/nav-links'
-import { useState } from 'react'
-import { GiHamburgerMenu } from "react-icons/gi";
-import { IoMdClose } from "react-icons/io";
-import { usePathname } from 'next/navigation';
-import { ConnectButton } from '@mysten/dapp-kit';
-import Image from 'next/image';
+import { AiOutlineHome } from "react-icons/ai";
+import { RiRefund2Line } from "react-icons/ri";
+import { CgProfile } from "react-icons/cg";
 
 export default function NavBar() {
+
   return (
-    <div>
-      Navbar
-    </div>
-  )
-};
+    <nav className = "w-full p-6 dark:bg-gray-900 fixed bottom-0 position-sticky z-50">
+      <div className="justify-between mx-auto px-2 items-center flex">
+        <Link href="/">
+          <AiOutlineHome className="text-5xl" style={{color:'white'}}/>
+        </Link>
+        <Link href="crowdfund">
+          <RiRefund2Line className="text-5xl" style={{color:'white'}}/>
+        </Link>
+        <Link href="profile">
+        <CgProfile className="text-5xl" style={{color:'white'}}/>
+        </Link>
+      </div>
+    </nav>
+    )
+}
