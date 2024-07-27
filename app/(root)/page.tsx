@@ -5,24 +5,34 @@ import { BsFillLightningChargeFill } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import { mockUsers } from "@/data/mockData";
 import { validatorOptions } from "@/constants";
-import { FaPlay } from "react-icons/fa";
+import { FaPlay, FaStop } from "react-icons/fa";
 import Modal from "../components/Modal";
 
 export default function Home() {
   const user = mockUsers[1];
-  const [batteryPercentage, setBatteryPercentage] = useState<string>("0");
+  const [batteryPercentage, setBatteryPercentage] = useState<number>(0);
   const [validatorPercentage, setValidatorPercentage] = useState<number>(0);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isValidatorRunning, setIsValidatorRunning] = useState<boolean>(false);
 
   useEffect(() => {
     if (!user) return;
     
     if (user?.battery) {
-      setBatteryPercentage(((user.battery.currentCapacity / user.battery.maxCapacity) * 100).toFixed(2));
+      setBatteryPercentage(Number(((user.battery.currentCapacity / user.battery.maxCapacity) * 100).toFixed(2)));
     }
 
     setValidatorPercentage(user?.validatorPercentage);
 
+  }, []);
+
+  // TODO: Remove later, for demo purposes only
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBatteryPercentage(prev => Math.min(prev + 0.01, 100));
+    }, 1000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -51,7 +61,7 @@ export default function Home() {
                   className="bg-secondary bg-opacity-20 rounded-lg h-[30px] p-1 relative w-full border border-secondary border-opacity-20 border-3"
                 >
                   <span className="absolute inset-0 flex items-center justify-center mix-blend-difference">
-                    {batteryPercentage}%
+                    {batteryPercentage.toFixed(2)}%
                   </span>
                   <div
                     className="bg-gradient-to-r from-primary to-accent h-full rounded-md"
@@ -69,13 +79,13 @@ export default function Home() {
 
       <div className="flex flex-row justify-between items-center gap-5 mx-4 h-1/2 mt-[50px]">
         <div className="flex flex-col justify-center w-1/2 items-center">
-          <p className="flex justify-center font-bold w-full text-2xl">Validator</p>
+          <p className="flex justify-center font-bold w-full text-xl">Validator</p>
           <p className="flex items-center justify-center mix-blend-difference font-bold text-lg">
               {validatorPercentage}%
             </p>
         </div>
         <div className="flex flex-col justify-center w-1/2 items-center">
-          <p className="flex justify-center font-bold w-full text-2xl">Personal Use</p>
+          <p className="flex justify-center font-bold w-full text-xl">Personal Use</p>
           <p className="flex items-center justify-center mix-blend-difference font-bold text-lg">
               {100 - validatorPercentage}%
             </p>
@@ -104,7 +114,8 @@ export default function Home() {
       </div>
 
       {/* Validator Buttons */}
-      <div className="flex flex-row gap-2 mx-6 items-center justify-between pt-8">
+      <p className="mx-6 mt-8 font-semibold">Validator Share</p>
+      <div className="flex flex-row gap-2 mx-6 items-center justify-between mt-3">
         {validatorOptions.map((option, index) => {
           const activeButtonClass = "rounded-lg bg-primary text-background px-3 py-1 w-[65px]";
           const inactiveButtonClass = "rounded-lg bg-secondary bg-opacity-20 text-secondary px-3 py-1 w-[65px]";
@@ -129,12 +140,17 @@ export default function Home() {
           className="flex flex-row items-center justify-center gap-2 px-4 py-2 bg-gradient-to-tl from-primary to-accent text-background rounded-lg glow-button font-semibold"
           onClick={() => setIsModalOpen(!isModalOpen)}
         >
-          <FaPlay />
-          Run Validator
+          {isValidatorRunning ? <FaStop /> : <FaPlay />}
+          {isValidatorRunning ? `Stop Validator` : `Run Validator` }
         </button>
       </div>
 
-      <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
+      <Modal
+        isOpen={isModalOpen}
+        setIsOpen={setIsModalOpen}
+        isValidatorRunning={isValidatorRunning}
+        setIsValidatorRunning={setIsValidatorRunning}
+      />
 
 
       <style jsx>{`

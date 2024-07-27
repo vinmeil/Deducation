@@ -4,9 +4,11 @@ import Modal from 'react-modal';
 type ModalProps = {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isValidatorRunning: boolean;
+  setIsValidatorRunning: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const Model = ({ isOpen, setIsOpen }: ModalProps) => {
+const Model = ({ isOpen, setIsOpen, isValidatorRunning, setIsValidatorRunning }: ModalProps) => {
   const customStyles = {
     overlay: {
       backgroundColor: 'rgba(0, 0, 0, 0.6)',
@@ -30,13 +32,18 @@ const Model = ({ isOpen, setIsOpen }: ModalProps) => {
         onRequestClose={() => setIsOpen(false)}
         style={customStyles}
       >
-        <h1 className="font-semibold p-2">Would you like to run your validator?</h1>
+        <h1 className="font-semibold p-2">Would you like to {isValidatorRunning ? "stop" : "run"} your validator?</h1>
         <div className = "flex justify-between items-center mt-2">
           <button
             type = "button"
             className = "bg-accent text-background rounded-lg font-semibold p-3"
+            onClick = {() => {
+              setIsValidatorRunning(!isValidatorRunning);
+              console.log(isValidatorRunning)
+              setIsOpen(false);
+            }}
           >
-            Run Validator
+            {isValidatorRunning ? "Stop Validator" : "Run Validator"}
           </button>
           <button
           type="button"

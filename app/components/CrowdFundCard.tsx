@@ -1,3 +1,5 @@
+"use client"
+
 import { ICrowdFund } from '@/models/crowdfund.model'
 import React from 'react'
 import Image from 'next/image'
@@ -11,7 +13,7 @@ const CrowdFundCard = ({ crowdfund }: CrowdFundCardProps) => {
 
     return (
         <>
-            <div className="flex flex-col h-1/3 h-max-1/3 w-[90%] outline outline-[#2F4F4F] rounded-lg justify-between">
+            <div className="flex flex-col h-1/3 h-max-1/3 w-[90%] outline outline-[#2F4F4F] rounded-lg justify-between shadow-glow">
                 <div className="p-2 w-full h-full">
                     <div className="flex gap-2 w-full items-center">
                         <h1 className="font-semibold">Request by {crowdfund.requester}</h1>
@@ -35,6 +37,11 @@ const CrowdFundCard = ({ crowdfund }: CrowdFundCardProps) => {
                     </div>
                 </div>
             </div>
+            <style jsx>{`
+              .shadow-glow {
+                box-shadow: 0 0 10px 2px rgba(47, 79, 79, 0.5);
+              }
+            `}</style>
         </>
     );
 }
