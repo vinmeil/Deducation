@@ -29,11 +29,15 @@ export default function Home() {
   // TODO: Remove later, for demo purposes only
   useEffect(() => {
     const interval = setInterval(() => {
-      setBatteryPercentage(prev => Math.min(prev + 0.01, 100));
+      if (user?.battery && !isValidatorRunning) {
+        setBatteryPercentage(prev => Math.min(prev + 0.01, 100));
+      } else if (user?.battery && isValidatorRunning) {
+        setBatteryPercentage(prev => Math.max(prev - 0.01, 0));
+      }
     }, 1000);
-
+    console.log(isValidatorRunning);
     return () => clearInterval(interval);
-  }, []);
+  }, [isValidatorRunning]);
 
   return (
 
