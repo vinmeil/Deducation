@@ -6,7 +6,6 @@ import { Theme } from "@radix-ui/themes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SuiClientProvider, WalletProvider } from "@mysten/dapp-kit";
 import { networkConfig } from "@/sui/networkConfig";
-import NavBar from "../components/NavBar";
 
 export default function RootLayout({
   children,
@@ -23,7 +22,6 @@ export default function RootLayout({
           <SuiClientProvider networks={networkConfig} defaultNetwork="testnet">
             <WalletProvider autoConnect>
               <div className={``}>{children}</div>
-              <NavBar />
             </WalletProvider>
           </SuiClientProvider>
         </QueryClientProvider>
