@@ -123,7 +123,7 @@ export default function Home() {
         {validatorOptions.map((option, index) => {
           const activeButtonClass = "rounded-lg bg-primary text-background px-3 py-1 w-[65px]";
           const inactiveButtonClass = "rounded-lg bg-secondary bg-opacity-20 text-secondary px-3 py-1 w-[65px]";
-          const isButtonActive = user.isLoaning && index < 3;
+          const isButtonActive = (user.isLoaning && index < 3) || isValidatorRunning;
 
           return (
             <button
