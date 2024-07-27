@@ -22,9 +22,22 @@ const Model = ({ isOpen, setIsOpen }: ModalProps) => {
   };
 
   return (
-    <div>
+    <div className="gap-4 flex-col">
       <Modal isOpen={isOpen} onRequestClose={() => setIsOpen(false)} style={customStyles}>
-        <h1 className="text-blue-500">hi</h1>
+        <h1 className="text-blue-500 p-2">Would you like to run your validator?</h1>
+        <div className = "flex justify-between items-center">
+          <button
+          type = "button"
+          className = "bg-red-500 p-3">
+            Run Validator
+          </button>
+          <button
+          type="button"
+          className="bg-red-500 p-3"
+          onClick = {() => setIsOpen(false)}>
+            Exit
+          </button>
+        </div>
       </Modal>
     </div>
   );

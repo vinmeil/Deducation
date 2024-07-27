@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { mockUsers } from "@/data/mockData";
 import { validatorOptions } from "@/constants";
 import { FaPlay } from "react-icons/fa";
+import Modal from "../components/Modal";
 
 export default function Home() {
   const user = mockUsers[1];
@@ -30,6 +31,7 @@ export default function Home() {
   }
 
   return (
+
     <div className="flex flex-col m-3 h-full">
       {/* Name & Wallet */}
       <div className="flex flex-row justify-between items-center gap-2">
@@ -130,12 +132,15 @@ export default function Home() {
       <div className="flex w-full justify-center items-center mt-10">
         <button
           className="flex flex-row items-center justify-center gap-2 px-4 py-2 bg-gradient-to-tl from-primary to-accent text-background rounded-lg glow-button font-semibold"
-          onClick={() => handleRunValidatorClick(isModalOpen, setIsModalOpen)}
+          onClick={() => setIsModalOpen(!isModalOpen)}
         >
           <FaPlay />
           Run Validator
         </button>
       </div>
+
+      <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
+
 
       <style jsx>{`
         .glow-button {
