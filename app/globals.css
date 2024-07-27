@@ -65,7 +65,7 @@ h6 {
 [data-dapp-kit].AccountDropdownMenu_connectedAccount__div2ql0 > div,
 [data-dapp-kit] .AccountDropdownMenu_connectedAccount__div2ql0 > div {
   gap: 8px;
-  max-width: 150px;
+  max-width: 30vw;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
