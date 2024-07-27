@@ -25,11 +25,6 @@ export default function Home() {
 
   }, []);
 
-
-  const handleRunValidatorClick = (isOpen: any, setIsOpen: any) => {
-    console.log("Running Validator");
-  }
-
   return (
 
     <div className="flex flex-col m-3 h-full">

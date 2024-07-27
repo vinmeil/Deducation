@@ -4,10 +4,10 @@ import Link from 'next/link'
 import { AiOutlineHome } from "react-icons/ai";
 import { RiRefund2Line } from "react-icons/ri";
 import { CgProfile } from "react-icons/cg";
-import { usePathname } from 'next/navigation';
+// import { usePathname } from 'next/navigation';
 
 export default function NewNavBar() {
-    const pathName = usePathname();
+    // const pathName = usePathname();
 
   return (
     <nav className = "w-full px-6 py-1 bg-[#29292b] fixed bottom-0 position-sticky z-50">
