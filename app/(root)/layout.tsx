@@ -7,6 +7,7 @@ import { Theme } from "@radix-ui/themes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SuiClientProvider, WalletProvider } from "@mysten/dapp-kit";
 import { networkConfig } from "@/sui/networkConfig";
+import NavBar from "../components/NavBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,7 +25,8 @@ export default function RootLayout({
         <QueryClientProvider client={queryClient}>
           <SuiClientProvider networks={networkConfig} defaultNetwork="testnet">
             <WalletProvider autoConnect>
-              <div className={inter.className}>{children}</div>
+              <NavBar />
+              <div className={`${inter.className} mt-[80px]`}>{children}</div>
             </WalletProvider>
           </SuiClientProvider>
         </QueryClientProvider>
