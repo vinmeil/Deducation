@@ -1,13 +1,19 @@
 "use client";
 
 import { ConnectButton, useCurrentAccount, useSuiClient } from "@mysten/dapp-kit";
+import { Transaction } from "@mysten/sui/transactions";
 import { BsFillLightningChargeFill } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import { mockUsers } from "@/data/mockData";
 import { validatorOptions } from "@/constants";
-import { KILAT_COIN_TYPE, KILAT_COIN_DECIMAL } from "../constants/coin.ts";
+import { PACKAGE_ID, KILAT_COIN_TYPE, KILAT_COIN_DECIMAL, KILAT_COIN_OBJECT_ID, KILAT_WALLET_ADDRESS } from "../constants/util.ts";
 import { FaPlay, FaStop } from "react-icons/fa";
 import Modal from "../components/Modal";
+import { Ed25519Keypair } from "@mysten/sui/keypairs/ed25519";
+import { decodeSuiPrivateKey } from "@mysten/sui/cryptography";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export default function Home() {
   const user = mockUsers[1];
@@ -17,7 +23,50 @@ export default function Home() {
   const [validatorPercentage, setValidatorPercentage] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isValidatorRunning, setIsValidatorRunning] = useState<boolean>(false);
-  const [kilatBalance, setKilatBalance] = useState<string>("");
+  const [kilatBalance, setKilatBalance] = useState<number>();
+
+  async function stopValidator() {
+    if (!account) return;
+
+    try {
+      const tx = new Transaction();
+
+      const { data } = await suiClient.getCoins({
+        owner: KILAT_WALLET_ADDRESS,
+        coinType: KILAT_COIN_TYPE,
+      });
+
+      if (!data.length) {
+        throw Error("No Kilat coins found");
+      }
+
+      const kilatCoin = data.find(c => c.coinType === KILAT_COIN_TYPE);
+
+      if (!kilatCoin) {
+        throw Error("No Kilat coins found");
+      }
+
+      tx.moveCall({
+        target: `${PACKAGE_ID}::kilat_coin::transfer`,
+        arguments: [
+          tx.object(KILAT_COIN_OBJECT_ID),
+          tx.pure.u64(1000),
+          tx.pure.address(account.address)
+        ],
+      });
+
+      const { digest } = await suiClient.signAndExecuteTransaction({
+        signer: Ed25519Keypair.fromSecretKey(decodeSuiPrivateKey(process.env.NEXT_PUBLIC_KILAT_WALLET_SECRET_KEY ?? "").secretKey),
+        transaction: tx,
+      })
+
+      setKilatBalance(prev => Number(prev) + 1000);
+
+      console.log("Transfer successful: ", digest);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   useEffect(() => {
     if (!user) return;
@@ -39,7 +88,6 @@ export default function Home() {
         setBatteryPercentage(prev => Math.max(prev - 0.01, 0));
       }
     }, 1000);
-    console.log(isValidatorRunning);
     return () => clearInterval(interval);
   }, [isValidatorRunning]);
 
@@ -52,7 +100,7 @@ export default function Home() {
             coinType: KILAT_COIN_TYPE,
           });
 
-          setKilatBalance(balance.totalBalance);
+          setKilatBalance(Number(balance.totalBalance));
         } catch (err) {
           console.log(err);
         }
@@ -176,6 +224,7 @@ export default function Home() {
         setIsOpen={setIsModalOpen}
         isValidatorRunning={isValidatorRunning}
         setIsValidatorRunning={setIsValidatorRunning}
+        stopValidator={stopValidator}
       />
 
       <style jsx>{`
