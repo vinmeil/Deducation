@@ -6,7 +6,7 @@ import { BsFillLightningChargeFill } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import { mockUsers } from "@/data/mockData";
 import { validatorOptions } from "@/constants";
-import { PACKAGE_ID, KILAT_COIN_TYPE, KILAT_COIN_DECIMAL, KILAT_COIN_OBJECT_ID, KILAT_WALLET_ADDRESS } from "../constants/util.ts";
+import { PACKAGE_ID, KILAT_COIN_TYPE, KILAT_COIN_OBJECT_ID, KILAT_WALLET_ADDRESS } from "../constants/util.ts";
 import { FaPlay, FaStop } from "react-icons/fa";
 import Modal from "../components/Modal";
 import { Ed25519Keypair } from "@mysten/sui/keypairs/ed25519";
