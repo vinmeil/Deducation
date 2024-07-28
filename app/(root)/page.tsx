@@ -7,6 +7,7 @@ import { mockUsers } from "@/data/mockData";
 import { validatorOptions } from "@/constants";
 import { FaPlay, FaStop } from "react-icons/fa";
 import Modal from "../components/Modal";
+import UserModal from "../components/UserModal";
 
 export default function Home() {
   const user = mockUsers[1];
@@ -18,6 +19,7 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isValidatorRunning, setIsValidatorRunning] = useState<boolean>(false);
   const [kilatBalance, setKilatBalance] = useState<string>("");
+  const [isUserModalOpen, setIsUserModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     setIsUserConnected(account !== null);
@@ -173,7 +175,7 @@ export default function Home() {
       <div className="flex w-full justify-center items-center mt-10">
         <button
           className="flex flex-row items-center justify-center gap-2 px-4 py-2 bg-gradient-to-tl from-primary to-accent text-background rounded-lg glow-button font-semibold"
-          onClick={() => setIsModalOpen(!isModalOpen)}
+          onClick={() => isUserConnected ? setIsModalOpen(!isModalOpen) : setIsUserModalOpen(!isUserModalOpen)}
         >
           {isValidatorRunning ? <FaStop /> : <FaPlay />}
           {isValidatorRunning ? `Stop Validator` : `Run Validator` }
@@ -185,6 +187,11 @@ export default function Home() {
         setIsOpen={setIsModalOpen}
         isValidatorRunning={isValidatorRunning}
         setIsValidatorRunning={setIsValidatorRunning}
+      />
+
+      <UserModal
+        isOpen={isUserModalOpen}
+        setIsOpen={setIsUserModalOpen}
       />
 
       <style jsx>{`
