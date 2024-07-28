@@ -5,6 +5,7 @@ import { BsFillLightningChargeFill } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import { mockUsers } from "@/data/mockData";
 import { validatorOptions } from "@/constants";
+import { KILAT_COIN_TYPE, KILAT_COIN_DECIMAL } from "../constants/coin.ts";
 import { FaPlay, FaStop } from "react-icons/fa";
 import Modal from "../components/Modal";
 
@@ -46,11 +47,9 @@ export default function Home() {
     async function fetchKilatBalance() {
       if (account) {
         try {
-          const KILAT_COIN = "0x6c4c3682fd01485f968052d86ba23ec55b6698d47471fd9258007234f600e592::kilat_coin::KILAT_COIN";
-
           const balance = await suiClient.getBalance({
             owner: account.address,
-            coinType: KILAT_COIN,
+            coinType: KILAT_COIN_TYPE,
           });
 
           setKilatBalance(balance.totalBalance);
@@ -69,7 +68,7 @@ export default function Home() {
       <div className="flex flex-row justify-between items-center gap-2">
         {account && <div className="flex flex-col truncate">
           <p className="font-bold truncate max-w-[200px]">{account.address}</p>
-          <p className="text-sm font-semibold">{Number(kilatBalance) / 10 ** 3} KLT</p>
+          <p className="text-sm font-semibold">{Number(kilatBalance) / 10 ** KILAT_COIN_DECIMAL} KLT</p>
         </div>}
         <ConnectButton />
       </div>
