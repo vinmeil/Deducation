@@ -69,7 +69,7 @@ export default function Home() {
   }, [suiClient, account])
 
   return (
-    <div className="flex flex-col m-3 h-full mb-32">
+    <div className="flex flex-col m-3 h-full">
       {/* Name & Wallet */}
       <div className="flex flex-row justify-between items-center gap-2">
         <div className="flex flex-col truncate">

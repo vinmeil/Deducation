@@ -22,8 +22,9 @@ export default function RootLayout({
     <html lang="en" className="flex flex-col h-full">
       <body className={`${poppins.className}`}>
         <div className="blurry-circle bottom-left"></div>
-        {/* <div className="blurry-circle top-right"></div> */}
-        {children}
+        <div className="pb-32">
+          {children}
+        </div>
         <NavBar />
       </body>
     </html>
