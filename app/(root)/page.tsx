@@ -24,6 +24,7 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isValidatorRunning, setIsValidatorRunning] = useState<boolean>(false);
   const [kilatBalance, setKilatBalance] = useState<number>();
+  const [kilatCoinIcon, setKilatCoinIcon] = useState<string | null | undefined>("");
 
   async function stopValidator() {
     if (!account) return;
@@ -37,13 +38,13 @@ export default function Home() {
       });
 
       if (!data.length) {
-        throw Error("No Kilat coins found");
+        throw Error("Kilat coin not found");
       }
 
       const kilatCoin = data.find(c => c.coinType === KILAT_COIN_TYPE);
 
       if (!kilatCoin) {
-        throw Error("No Kilat coins found");
+        throw Error("Kilat coin not found");
       }
 
       const stakeReturns = Math.floor((1000 + Math.random() * 500) * validatorPercentage / 100);
@@ -66,13 +67,13 @@ export default function Home() {
 
       console.log("Transfer successful: ", digest);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 
   useEffect(() => {
     if (!user) return;
-    
+
     if (user.battery) {
       setBatteryPercentage(Number(((user.battery.currentCapacity / user.battery.maxCapacity) * 100).toFixed(2)));
     }
@@ -102,14 +103,37 @@ export default function Home() {
             coinType: KILAT_COIN_TYPE,
           });
 
+          if (!balance) {
+            throw Error("Kilat coin not found");
+          }
+
           setKilatBalance(Number(balance.totalBalance));
         } catch (err) {
-          console.log(err);
+          console.error(err);
+        }
+      }
+    }
+
+    async function fetchKilatCoinIcon() {
+      if (account) {
+        try {
+          const data = await suiClient.getCoinMetadata({
+            coinType: KILAT_COIN_TYPE,
+          })
+
+          if (!data) {
+            throw Error("Kilat coin not found")
+          }
+
+          setKilatCoinIcon(data.iconUrl);
+        } catch (err) {
+          console.error(err)
         }
       }
     }
 
     fetchKilatBalance();
+    fetchKilatCoinIcon();
   }, [suiClient, account])
 
   return (
@@ -118,7 +142,10 @@ export default function Home() {
       <div className="flex flex-row justify-end items-center gap-2">
         {account && <div className="flex flex-col truncate mr-auto">
           <p className="font-bold truncate max-w-[200px]">{account.address}</p>
-          <p className="text-sm font-semibold">{Number(kilatBalance) / 10 ** KILAT_COIN_DECIMAL} KLT</p>
+          <div className="flex items-center gap-2">
+            <p className="text-sm font-semibold">{Number(kilatBalance) / 10 ** KILAT_COIN_DECIMAL} KLT</p>
+            {kilatCoinIcon && <img src={kilatCoinIcon} alt="Kilat Coin" className="size-4" />}
+          </div>
         </div>}
         <ConnectButton />
       </div>
@@ -157,14 +184,14 @@ export default function Home() {
         <div className="flex flex-col justify-center w-1/2 items-center">
           <p className="flex justify-center font-bold w-full text-xl">Validator</p>
           <p className="flex items-center justify-center mix-blend-difference font-bold text-lg">
-              {validatorPercentage}%
-            </p>
+            {validatorPercentage}%
+          </p>
         </div>
         <div className="flex flex-col justify-center w-1/2 items-center">
           <p className="flex justify-center font-bold w-full text-xl">Personal Use</p>
           <p className="flex items-center justify-center mix-blend-difference font-bold text-lg">
-              {100 - validatorPercentage}%
-            </p>
+            {100 - validatorPercentage}%
+          </p>
         </div>
       </div>
 
@@ -217,7 +244,7 @@ export default function Home() {
           onClick={() => setIsModalOpen(!isModalOpen)}
         >
           {isValidatorRunning ? <FaStop /> : <FaPlay />}
-          {isValidatorRunning ? `Stop Validator` : `Run Validator` }
+          {isValidatorRunning ? `Stop Validator` : `Run Validator`}
         </button>
       </div>
 
