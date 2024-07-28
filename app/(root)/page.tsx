@@ -6,12 +6,14 @@ import { BsFillLightningChargeFill } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import { mockUsers } from "@/data/mockData";
 import { validatorOptions } from "@/constants";
-import { PACKAGE_ID, KILAT_COIN_TYPE, KILAT_COIN_DECIMAL, KILAT_COIN_OBJECT_ID, KILAT_WALLET_ADDRESS } from "../constants/util.ts";
+import { PACKAGE_ID, KILAT_COIN_TYPE, KILAT_COIN_OBJECT_ID, KILAT_COIN_DECIMAL, KILAT_WALLET_ADDRESS } from "../constants/util.ts";
 import { FaPlay, FaStop } from "react-icons/fa";
 import Modal from "../components/Modal";
 import { Ed25519Keypair } from "@mysten/sui/keypairs/ed25519";
 import { decodeSuiPrivateKey } from "@mysten/sui/cryptography";
 import dotenv from "dotenv";
+import UserModal from "../components/UserModal.tsx";
+import TransactionModal from "../components/TransactionModal.tsx";
 
 dotenv.config();
 
@@ -19,11 +21,14 @@ export default function Home() {
   const user = mockUsers[1];
   const suiClient = useSuiClient();
   const account = useCurrentAccount();
+  const [isUserModalOpen, setIsUserModalOpen] = useState<boolean>(false);
+  const [isTransactionModalOpen, setIsTransactionModalOpen] = useState<boolean>(false);
   const [batteryPercentage, setBatteryPercentage] = useState<number>(0);
   const [validatorPercentage, setValidatorPercentage] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isValidatorRunning, setIsValidatorRunning] = useState<boolean>(false);
-  const [kilatBalance, setKilatBalance] = useState<number>();
+  const [kilatBalance, setKilatBalance] = useState<number>(0);
+  const [stakeReturns, setStakeReturns] = useState<number | undefined>(0);
   const [kilatCoinIcon, setKilatCoinIcon] = useState<string | null | undefined>("");
 
   async function stopValidator() {
@@ -66,9 +71,18 @@ export default function Home() {
       setKilatBalance(prev => Number(prev) + stakeReturns);
 
       console.log("Transfer successful: ", digest);
+
+      return stakeReturns;
+
     } catch (err) {
       console.error(err);
     }
+  }
+
+  const handleValidatorStop = async () => {
+    const res = await stopValidator();
+    setStakeReturns(res);
+    setIsTransactionModalOpen(true);
   }
 
   useEffect(() => {
@@ -241,7 +255,7 @@ export default function Home() {
       <div className="flex w-full justify-center items-center mt-10">
         <button
           className="flex flex-row items-center justify-center gap-2 px-4 py-2 bg-gradient-to-tl from-primary to-accent text-background rounded-lg glow-button font-semibold"
-          onClick={() => setIsModalOpen(!isModalOpen)}
+          onClick={() => account ? setIsModalOpen(!isModalOpen) : setIsUserModalOpen(!isUserModalOpen)}
         >
           {isValidatorRunning ? <FaStop /> : <FaPlay />}
           {isValidatorRunning ? `Stop Validator` : `Run Validator`}
@@ -254,7 +268,14 @@ export default function Home() {
         isValidatorRunning={isValidatorRunning}
         setIsValidatorRunning={setIsValidatorRunning}
         stopValidator={stopValidator}
+        // setIsTransactionModalOpen={setIsTransactionModalOpen}
+        // isTransactionModalOpen={isTransactionModalOpen}
+        handleValidatorStop={handleValidatorStop}
       />
+
+      <UserModal isOpen={isUserModalOpen} setIsOpen={setIsUserModalOpen} />
+
+      <TransactionModal isOpen={isTransactionModalOpen} setIsOpen={setIsTransactionModalOpen} stakeReturns={stakeReturns} />
 
       <style jsx>{`
         .glow-button {
