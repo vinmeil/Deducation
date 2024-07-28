@@ -40,3 +40,4 @@ build
 *.lock
 
 *Zone.Identifier
+.env
