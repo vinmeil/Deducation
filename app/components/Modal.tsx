@@ -6,9 +6,10 @@ type ModalProps = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isValidatorRunning: boolean;
   setIsValidatorRunning: React.Dispatch<React.SetStateAction<boolean>>;
+  stopValidator: () => void;
 };
 
-const Model = ({ isOpen, setIsOpen, isValidatorRunning, setIsValidatorRunning }: ModalProps) => {
+const Model = ({ isOpen, setIsOpen, isValidatorRunning, setIsValidatorRunning, stopValidator }: ModalProps) => {
   const customStyles = {
     overlay: {
       backgroundColor: 'rgba(0, 0, 0, 0.6)',
@@ -40,8 +41,8 @@ const Model = ({ isOpen, setIsOpen, isValidatorRunning, setIsValidatorRunning }:
             className = "bg-accent text-background rounded-lg font-semibold p-3"
             onClick = {() => {
               setIsValidatorRunning(!isValidatorRunning);
-              console.log(isValidatorRunning)
               setIsOpen(false);
+              isValidatorRunning ? stopValidator() : null;
             }}
           >
             {isValidatorRunning ? "Stop Validator" : "Run Validator"}
