@@ -12,11 +12,16 @@ export default function Home() {
   const user = mockUsers[1];
   const suiClient = useSuiClient();
   const account = useCurrentAccount();
+  const [isUserConnected, setIsUserConnected] = useState<boolean>(account !== null);
   const [batteryPercentage, setBatteryPercentage] = useState<number>(0);
   const [validatorPercentage, setValidatorPercentage] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isValidatorRunning, setIsValidatorRunning] = useState<boolean>(false);
   const [kilatBalance, setKilatBalance] = useState<string>("");
+
+  useEffect(() => {
+    setIsUserConnected(account !== null);
+  }, [account])
 
   useEffect(() => {
     if (!user) return;
@@ -67,10 +72,13 @@ export default function Home() {
     <div className="flex flex-col m-3 h-full">
       {/* Name & Wallet */}
       <div className="flex flex-row justify-between items-center gap-2">
-        {account && <div className="flex flex-col truncate">
+        <div className="flex flex-col truncate">
+        {account && isUserConnected && (
+          <>
           <p className="font-bold truncate max-w-[200px]">{account.address}</p>
           <p className="text-sm font-semibold">{Number(kilatBalance) / 10 ** 3} KLT</p>
-        </div>}
+        </>)}
+        </div>
         <ConnectButton />
       </div>
 
