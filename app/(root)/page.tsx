@@ -69,7 +69,7 @@ export default function Home() {
   }, [suiClient, account])
 
   return (
-    <div className="flex flex-col m-3 h-full">
+    <div className="flex flex-col m-3 h-full mb-32">
       {/* Name & Wallet */}
       <div className="flex flex-row justify-between items-center gap-2">
         <div className="flex flex-col truncate">
@@ -149,8 +149,8 @@ export default function Home() {
       </div>
 
       {/* Validator Buttons */}
-      <p className="mx-6 mt-8 font-semibold">Validator Share</p>
-      <div className="flex flex-row gap-2 mx-6 items-center justify-between mt-3">
+      <p className="mx-6 mt-8 font-semibold md:flex md:justify-center">Validator Share</p>
+      <div className="flex flex-row  mx-6 items-center justify-center gap-10 max-sm:gap-2 max-sm:justify-between mt-3">
         {validatorOptions.map((option, index) => {
           const activeButtonClass = "rounded-lg bg-primary text-background px-3 py-1 w-[65px]";
           const inactiveButtonClass = "rounded-lg bg-secondary bg-opacity-20 text-secondary px-3 py-1 w-[65px]";
