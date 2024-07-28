@@ -1,4 +1,5 @@
 import { IUser } from "@/models/user.model";
+import { ICrowdFund } from "@/models/crowdfund.model";
 
 export const mockUsers: IUser[] = [
   {
@@ -25,8 +26,7 @@ export const mockUsers: IUser[] = [
     personalPercentage: 60,
     isLoaning: true,
   },
-]
-import { ICrowdFund } from "@/models/crowdfund.model";
+];
 
 export const tempCrowdFund: ICrowdFund[] = [
   {
