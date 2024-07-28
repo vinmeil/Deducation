@@ -24,7 +24,7 @@ const CrowdFundCard = ({ crowdfund }: CrowdFundCardProps) => {
                 <div className="flex p-2 w-full justify-between items-end">
                     <div className="flex">
                     <Image 
-                            src={require('@/models/Klt.png')} 
+                            src="/images/icon.png" 
                             width={32}
                             height={30}
                             alt="Kilat Coin"
