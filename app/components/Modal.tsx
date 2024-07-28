@@ -10,7 +10,7 @@ type ModalProps = {
   handleValidatorStop: () => {};
 };
 
-const Model = ({ isOpen, setIsOpen, isValidatorRunning, setIsValidatorRunning, stopValidator, handleValidatorStop }: ModalProps) => {
+const Model = ({ isOpen, setIsOpen, isValidatorRunning, setIsValidatorRunning, stopValidator, handleValidatorStop}: ModalProps) => {
   const customStyles = {
     overlay: {
       backgroundColor: 'rgba(0, 0, 0, 0.6)',
