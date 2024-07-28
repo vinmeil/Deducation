@@ -46,11 +46,13 @@ export default function Home() {
         throw Error("No Kilat coins found");
       }
 
+      const stakeReturns = Math.floor((1000 + Math.random() * 500) * validatorPercentage / 100);
+
       tx.moveCall({
         target: `${PACKAGE_ID}::kilat_coin::transfer`,
         arguments: [
           tx.object(KILAT_COIN_OBJECT_ID),
-          tx.pure.u64(1000),
+          tx.pure.u64(stakeReturns),
           tx.pure.address(account.address)
         ],
       });
@@ -60,7 +62,7 @@ export default function Home() {
         transaction: tx,
       })
 
-      setKilatBalance(prev => Number(prev) + 1000);
+      setKilatBalance(prev => Number(prev) + stakeReturns);
 
       console.log("Transfer successful: ", digest);
     } catch (err) {
@@ -113,8 +115,8 @@ export default function Home() {
   return (
     <div className="flex flex-col m-3 h-full">
       {/* Name & Wallet */}
-      <div className="flex flex-row justify-between items-center gap-2">
-        {account && <div className="flex flex-col truncate">
+      <div className="flex flex-row justify-end items-center gap-2">
+        {account && <div className="flex flex-col truncate mr-auto">
           <p className="font-bold truncate max-w-[200px]">{account.address}</p>
           <p className="text-sm font-semibold">{Number(kilatBalance) / 10 ** KILAT_COIN_DECIMAL} KLT</p>
         </div>}
