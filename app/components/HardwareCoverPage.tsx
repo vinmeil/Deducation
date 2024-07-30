@@ -16,7 +16,7 @@ const HardwareCoverPage = ({ setIsHardwareConnected }: HardwareCoverPageProps) =
   };
 
   return (
-    <div className="w-screen h-screen flex flex-col gap-8 justify-center items-center absolute z-[1000] bg-black">
+    <div className="w-screen h-screen flex flex-col gap-8 justify-center items-center absolute z-[1000]">
       <LuUnplug size={128} />
       <p className="text-4xl font-semibold">Device not connected</p>
       <button
