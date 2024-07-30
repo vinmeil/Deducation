@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 import { Styles } from 'react-modal';
 import Image from 'next/image';
 import { getSuiAccounts} from '../utils/graphql';
-import { ConnectButton, useWallets, useAccounts , useCurrentWallet, useCurrentAccount} from '@mysten/dapp-kit';
+import { useCurrentAccount} from '@mysten/dapp-kit';
 import { Transaction } from "@mysten/sui/transactions";
 import { useSignAndExecuteTransaction, useSuiClient } from "@mysten/dapp-kit";
 
@@ -92,7 +92,7 @@ const StakeModal = ({ isOpen, setIsOpen, isStaked, setIsStaked, stakeAmount, set
         });
         signAndExecute({
             transaction: tx,
-        },{onSuccess: async (result)=>{
+        },{onSuccess: async ()=>{
           setIsStaked(false);
           setInputAmount("");
           setIsOpen(false);
