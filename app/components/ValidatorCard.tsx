@@ -8,7 +8,7 @@ type ValidatorCardProps = {
   user: IUser;
   isValidatorRunning: boolean;
   setValidatorPercentage: (value: number) => void;
-  isUserConnected: boolean;
+  account: any;
   setIsModalOpen: (value: boolean) => void;
   isModalOpen: boolean;
   setIsUserModalOpen: (value: boolean) => void;
@@ -19,7 +19,7 @@ const ValidatorCard = ({
   user,
   isValidatorRunning,
   setValidatorPercentage,
-  isUserConnected,
+  account,
   setIsModalOpen,
   isModalOpen,
   setIsUserModalOpen,
@@ -53,7 +53,7 @@ const ValidatorCard = ({
           <div className="flex w-full justify-center items-center mt-10">
             <button
               className="flex flex-row items-center justify-center gap-2 px-4 py-2 bg-gradient-to-tl from-primary to-accent text-background rounded-lg glow-button font-semibold"
-              onClick={() => isUserConnected ? setIsModalOpen(!isModalOpen) : setIsUserModalOpen(!isUserModalOpen)}
+              onClick={() => account ? setIsModalOpen(!isModalOpen) : setIsUserModalOpen(!isUserModalOpen)}
             >
               {isValidatorRunning ? <FaStop /> : <FaPlay />}
               {isValidatorRunning ? `Stop Validator` : `Run Validator` }

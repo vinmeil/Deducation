@@ -35,7 +35,7 @@ const UserModal = ({ isOpen, setIsOpen }: ModalProps) => {
         style={customStyles as Styles}
       >
         <div className="p-5 h-full flex flex-col items-center justify-center gap-3">
-          <h1 className="font-semibold p-2 text-center">User wallet is not connected, please connect your wallet.</h1>
+          <h1 className="font-semibold p-2 text-center">Please connect your wallet.</h1>
           <button
             type="button"
             className="bg-red-500 text-background rounded-lg font-semibold p-3"

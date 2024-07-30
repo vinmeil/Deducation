@@ -1,26 +1,26 @@
 import { ConnectButton } from '@mysten/dapp-kit'
 import React from 'react'
 
+import { KILAT_COIN_DECIMAL } from '../constants/util'
+
 type HeaderProps = {
   account: any;
-  isUserConnected: boolean;
   kilatBalance: number;
+  kilatCoinIcon: string | null | undefined;
 }
 
-const Header = ({ account, isUserConnected, kilatBalance }: HeaderProps) => {
+const Header = ({ account, kilatBalance, kilatCoinIcon }: HeaderProps) => {
   return (
-    <div>
-      <div className="flex flex-row justify-between items-center gap-2">
-        <div className="flex flex-col truncate">
-        {account && isUserConnected && (
-          <>
+    <div className="flex flex-row justify-end items-center gap-2">
+        {account && <div className="flex flex-col truncate mr-auto">
           <p className="font-bold truncate max-w-[200px]">{account.address}</p>
-          <p className="text-sm font-semibold">{Number(kilatBalance) / 10 ** 3} KLT</p>
-        </>)}
-        </div>
+          <div className="flex items-center gap-2">
+            <p className="text-sm font-semibold">{Number(kilatBalance) / 10 ** KILAT_COIN_DECIMAL} KLT</p>
+            {kilatCoinIcon && <img src={kilatCoinIcon} alt="Kilat Coin" className="size-4" />}
+          </div>
+        </div>}
         <ConnectButton />
       </div>
-  </div>
   )
 }
 

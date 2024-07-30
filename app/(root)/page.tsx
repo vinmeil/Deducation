@@ -22,7 +22,6 @@ export default function Home() {
   const user = mockUsers[1];
   const suiClient = useSuiClient();
   const account = useCurrentAccount();
-  const [isUserConnected, setIsUserConnected] = useState<boolean>(account !== null);
   const [isUserModalOpen, setIsUserModalOpen] = useState<boolean>(false);
   const [isTransactionModalOpen, setIsTransactionModalOpen] = useState<boolean>(false);
   const [batteryPercentage, setBatteryPercentage] = useState<number>(0);
@@ -31,11 +30,7 @@ export default function Home() {
   const [isValidatorRunning, setIsValidatorRunning] = useState<boolean>(false);
   const [kilatBalance, setKilatBalance] = useState<number>(0);
   const [stakeReturns, setStakeReturns] = useState<number | undefined>(0);
-
-  useEffect(() => {
-    setIsUserConnected(account !== null);
-  }, [account])
-
+  const [kilatCoinIcon, setKilatCoinIcon] = useState<string | null | undefined>("");
 
   async function stopValidator() {
     if (!account) return;
@@ -49,13 +44,13 @@ export default function Home() {
       });
 
       if (!data.length) {
-        throw Error("No Kilat coins found");
+        throw Error("Kilat coin not found");
       }
 
       const kilatCoin = data.find(c => c.coinType === KILAT_COIN_TYPE);
 
       if (!kilatCoin) {
-        throw Error("No Kilat coins found");
+        throw Error("Kilat coin not found");
       }
 
       const stakeReturns = Math.floor((1000 + Math.random() * 500) * validatorPercentage / 100);
@@ -81,7 +76,7 @@ export default function Home() {
       return stakeReturns;
 
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 
@@ -93,7 +88,7 @@ export default function Home() {
 
   useEffect(() => {
     if (!user) return;
-    
+
     if (user.battery) {
       setBatteryPercentage(Number(((user.battery.currentCapacity / user.battery.maxCapacity) * 100).toFixed(2)));
     }
@@ -123,14 +118,37 @@ export default function Home() {
             coinType: KILAT_COIN_TYPE,
           });
 
+          if (!balance) {
+            throw Error("Kilat coin not found");
+          }
+
           setKilatBalance(Number(balance.totalBalance));
         } catch (err) {
-          console.log(err);
+          console.error(err);
+        }
+      }
+    }
+
+    async function fetchKilatCoinIcon() {
+      if (account) {
+        try {
+          const data = await suiClient.getCoinMetadata({
+            coinType: KILAT_COIN_TYPE,
+          })
+
+          if (!data) {
+            throw Error("Kilat coin not found")
+          }
+
+          setKilatCoinIcon(data.iconUrl);
+        } catch (err) {
+          console.error(err)
         }
       }
     }
 
     fetchKilatBalance();
+    fetchKilatCoinIcon();
   }, [suiClient, account])
 
   return (
@@ -138,7 +156,7 @@ export default function Home() {
       <div className="flex flex-col m-3 h-full">
         <div>
           {/* Name & Wallet */}
-          <Header account={account} isUserConnected={isUserConnected} kilatBalance={kilatBalance} />
+          <Header account={account} kilatBalance={kilatBalance} kilatCoinIcon={kilatCoinIcon} />
 
           {/* Battery Percentage */}
           <BatteryPercentage user={user} batteryPercentage={batteryPercentage} />
@@ -153,7 +171,7 @@ export default function Home() {
             user={user}
             isValidatorRunning={isValidatorRunning}
             setValidatorPercentage={setValidatorPercentage}
-            isUserConnected={isUserConnected}
+            account={account}
             setIsModalOpen={setIsModalOpen}
             isModalOpen={isModalOpen}
             setIsUserModalOpen={setIsUserModalOpen}
