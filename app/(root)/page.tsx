@@ -1,8 +1,7 @@
 "use client";
 
-import { ConnectButton, useCurrentAccount, useSuiClient } from "@mysten/dapp-kit";
+import {  useCurrentAccount, useSuiClient } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
-import { BsFillLightningChargeFill } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import { mockUsers } from "@/data/mockData";
 import { PACKAGE_ID, KILAT_COIN_TYPE, KILAT_COIN_OBJECT_ID, KILAT_WALLET_ADDRESS } from "../constants/util.ts";
@@ -145,7 +144,7 @@ export default function Home() {
           <BatteryPercentage user={user} batteryPercentage={batteryPercentage} />
         </div>
 
-        <div className="flex flex-col xs:flex-row">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-10 sm:gap-[120px] sm:mt-[100px]">
           {/* Validator & Personal Use */}
           <VerticalBattery validatorPercentage={validatorPercentage} />
 
@@ -176,12 +175,6 @@ export default function Home() {
         <UserModal isOpen = {isUserModalOpen} setIsOpen = {setIsUserModalOpen} />
 
         <TransactionModal isOpen = {isTransactionModalOpen} setIsOpen = {setIsTransactionModalOpen} stakeReturns = {stakeReturns} />
-
-        <style jsx>{`
-          .glow-button {
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3), 0 0 30px rgba(255, 255, 255, 0.2);
-            }
-            `}</style>
       </div>
     </div>
   );
