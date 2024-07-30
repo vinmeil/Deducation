@@ -17,7 +17,7 @@ const TransactionModal = ({ isOpen, setIsOpen, stakeReturns }: ModalProps) => {
       top: '50%',
       left: '50%',
       right: 'auto',
-      width: "80vw",
+      width: "2/3",
       bottom: 'auto',
       marginRight: '-50%',
       transform: 'translate(-50%, -50%)',
