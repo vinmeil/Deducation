@@ -134,3 +134,25 @@ body::before {
   justify-content: center;
   z-index: 1000;
 }
+
+.animated-border {
+  position: relative;
+}
+
+.animated-border::after, animated-border::before {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  /* border: 1px solid white; */
+  /* box-shadow: 0px 0px 0px 2px rgba(255, 255, 255, 0.3);  */
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3), 0 0 30px rgba(255, 255, 255, 0.2);
+  /* background-image: conic-gradient(#3e9a2c, #26e400, #f5ff45, #3e9a2c); */
+  z-index: -1;
+  top: 0%;
+  border-radius: 16px;
+}
+
+.animated-border::before {
+  filter: blur(1.5rem)
+}
