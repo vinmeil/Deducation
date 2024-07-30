@@ -49,7 +49,7 @@ const StakeModal = ({ isOpen, setIsOpen, isStaked, setIsStaked, stakeAmount, set
         style={customStyles as Styles}
       >
         <div className="p-5 h-full flex flex-col items-center justify-center gap-6 w-full">
-          <h1 className="font-semibold p-2 text-center">Stake Sui to validator</h1>
+          <h1 className="font-semibold p-2 text-center text-xl">Stake Sui to validator</h1>
           <Image
             src='/images/sui-sui-logo.png'
             width={64}
