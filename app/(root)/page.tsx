@@ -214,11 +214,11 @@ export default function Home() {
 
       {/* Validator Buttons */}
       <p className="mx-6 mt-8 font-semibold md:flex md:justify-center">Validator Share</p>
-      <div className="flex flex-row  mx-6 items-center justify-center gap-10 max-sm:gap-2 max-sm:justify-between mt-3">
+      <div className="flex flex-row items-center justify-center gap-2 max-w-[400px] w-full max-sm:gap-2 max-sm:justify-between mt-3">
         {validatorOptions.map((option, index) => {
-          const activeButtonClass = "rounded-lg bg-primary text-background px-3 py-1 w-[65px]";
-          const inactiveButtonClass = "rounded-lg bg-secondary bg-opacity-20 text-secondary px-3 py-1 w-[65px]";
-          const isButtonActive = (user.isLoaning && index < 3) || isValidatorRunning;
+          const activeButtonClass = "rounded-lg bg-primary text-background px-3 py-1 w-[60px]";
+          const inactiveButtonClass = "rounded-lg bg-secondary bg-opacity-20 text-secondary py-1 w-[60px]";
+          const isButtonActive = (user.isLoaning && index < 2) || isValidatorRunning;
 
           return (
             <button
