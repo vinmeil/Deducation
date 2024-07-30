@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react'
 import Modal, { Styles } from 'react-modal';
 
@@ -33,6 +35,18 @@ const ConnectDeviceModal = ({ isOpen, setIsOpen, setIsHardwareConnected }: Modal
     setIsHardwareConnected(true);
     setIsOpen(false);
   };
+
+  // useEffect(() => {
+  //   const handleUnload = () => {
+  //     localStorage.setItem('isHardwareConnected', JSON.stringify(false));
+  //   };
+
+  //   window.addEventListener('unload', handleUnload);
+
+  //   return () => {
+  //     window.removeEventListener('unload', handleUnload);
+  //   };
+  // }, []);
 
   return (
     <div className="gap-4 flex-col">

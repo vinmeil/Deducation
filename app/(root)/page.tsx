@@ -38,12 +38,12 @@ export default function Home() {
   const [stakeReturns, setStakeReturns] = useState<number | undefined>(0);
   const [kilatCoinIcon, setKilatCoinIcon] = useState<string | null | undefined>("");
 
-  useEffect(() => {
-    const savedState = localStorage.getItem('isHardwareConnected');
-    if (savedState !== null) {
-      setIsHardwareConnected(JSON.parse(savedState));
-    }
-  }, []);
+  // useEffect(() => {
+  //   const savedState = localStorage.getItem('isHardwareConnected');
+  //   if (savedState !== null) {
+  //     setIsHardwareConnected(JSON.parse(savedState));
+  //   }
+  // }, []);
 
 
   async function stopValidator() {
@@ -177,21 +177,23 @@ export default function Home() {
             <BatteryPercentage user={user} batteryPercentage={batteryPercentage} />
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-10 sm:gap-[120px] sm:mt-[100px]">
-            {/* Validator & Personal Use */}
-            <VerticalBattery validatorPercentage={validatorPercentage} />
+          <div className="w-full h-full flex justify-center items-center scale-150">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-10 sm:gap-[120px] sm:mt-[100px] h-full sm:w-[80%]">
+              {/* Validator & Personal Use */}
+              <VerticalBattery validatorPercentage={validatorPercentage} />
 
-            {/* Validator Buttons */}
-            <ValidatorCard
-              user={user}
-              isValidatorRunning={isValidatorRunning}
-              setValidatorPercentage={setValidatorPercentage}
-              account={account}
-              setIsModalOpen={setIsModalOpen}
-              isModalOpen={isModalOpen}
-              setIsUserModalOpen={setIsUserModalOpen}
-              isUserModalOpen={isUserModalOpen}
-              />
+              {/* Validator Buttons */}
+              <ValidatorCard
+                user={user}
+                isValidatorRunning={isValidatorRunning}
+                setValidatorPercentage={setValidatorPercentage}
+                account={account}
+                setIsModalOpen={setIsModalOpen}
+                isModalOpen={isModalOpen}
+                setIsUserModalOpen={setIsUserModalOpen}
+                isUserModalOpen={isUserModalOpen}
+                />
+            </div>
           </div>
 
           <Modal
