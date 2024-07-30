@@ -177,7 +177,7 @@ export default function Home() {
             <BatteryPercentage user={user} batteryPercentage={batteryPercentage} />
           </div>
 
-          <div className="w-full h-full flex justify-center items-center scale-150">
+          <div className="w-full h-full flex justify-center items-center sm:scale-150">
             <div className="flex flex-col sm:flex-row items-center justify-center gap-10 sm:gap-[120px] sm:mt-[100px] h-full sm:w-[80%]">
               {/* Validator & Personal Use */}
               <VerticalBattery validatorPercentage={validatorPercentage} />
