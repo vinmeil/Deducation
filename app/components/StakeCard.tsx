@@ -4,7 +4,6 @@ import { IStake } from '@/models/stake.model';
 import Image from 'next/image';
 import { useState } from 'react';
 import StakeModal from './StakeModal';
-import { useEffect } from 'react';
 
 type StakeCardProps = {
     stake: IStake;
@@ -16,33 +15,6 @@ const StakeCard = ({stake}: StakeCardProps) => {
     const [isStaked, setIsStaked] = useState(false);
     const [stakeAmount, setStakeAmount] = useState(stake.stakeAmount);
     const originalAmount = stake.stakeAmount;
-
-    // Retrieve state from local storage when component mounts
-    useEffect(() => {
-        const storedIsStaked = localStorage.getItem('isStaked');
-        const storedStakeAmount = localStorage.getItem('stakeAmount');
-
-        console.log('Retrieved from localStorage:', { storedIsStaked, storedStakeAmount });
-
-        if (storedIsStaked) {
-            setIsStaked(JSON.parse(storedIsStaked));
-        }
-
-        if (storedStakeAmount) {
-            setStakeAmount(JSON.parse(storedStakeAmount));
-        }
-    }, []);
-
-    // Save state to local storage whenever it changes
-    useEffect(() => {
-        console.log('Saving isStaked to localStorage:', isStaked);
-        localStorage.setItem('isStaked', JSON.stringify(isStaked));
-    }, [isStaked]);
-
-    useEffect(() => {
-        console.log('Saving stakeAmount to localStorage:', stakeAmount);
-        localStorage.setItem('stakeAmount', JSON.stringify(stakeAmount));
-    }, [stakeAmount]);
 
     const handleStake = () => {
         setIsOpen(true);
