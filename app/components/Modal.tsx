@@ -39,7 +39,8 @@ const Model = ({ isOpen, setIsOpen, isValidatorRunning, setIsValidatorRunning, s
         <div className = "flex justify-between items-center mt-2">
           <button
             type = "button"
-            className = "bg-accent text-background rounded-lg font-semibold p-3"
+            className="items-center justify-center px-4 py-3 bg-gradient-to-tl from-primary to-accent 
+            text-background rounded-lg glow-button font-semibold"
             onClick = {() => {
               if (!isValidatorRunning){
                 setIsValidatorRunning(!isValidatorRunning);

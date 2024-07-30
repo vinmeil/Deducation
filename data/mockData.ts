@@ -1,5 +1,6 @@
 import { IUser } from "@/models/user.model";
 import { ICrowdFund } from "@/models/crowdfund.model";
+import { IStake } from "@/models/stake.model";
 
 export const mockUsers: IUser[] = [
   {
@@ -27,6 +28,70 @@ export const mockUsers: IUser[] = [
     isLoaning: true,
   },
 ];
+
+export const mockStakes: IStake[] = [
+  {
+    _id: "1",
+    title: "Stake 1",
+    stakeAmount: 10000,
+    isStaked: false,
+  },
+  {
+    _id: "2",
+    title: "Stake 2",
+    stakeAmount: 20000,
+    isStaked: false,
+  },
+  {
+    _id: "3",
+    title: "Stake 3",
+    stakeAmount: 30000,
+    isStaked: false,
+  },
+  {
+    _id: "4",
+    title: "Stake 4",
+    stakeAmount: 40000,
+    isStaked: false,
+  },
+  {
+    _id: "5",
+    title: "Stake 5",
+    stakeAmount: 50000,
+    isStaked: false,
+  },
+  {
+    _id: "6",
+    title: "Stake 6",
+    stakeAmount: 60000,
+    isStaked: false,
+  },
+  {
+    _id: "7",
+    title: "Stake 7",
+    stakeAmount: 70000,
+    isStaked: false,
+  },
+  {
+    _id: "8",
+    title: "Stake 8",
+    stakeAmount: 80000,
+    isStaked: false,
+  },
+  {
+    _id: "9",
+    title: "Stake 9",
+    stakeAmount: 90000,
+    isStaked: false,
+  },
+  {
+    _id: "10",
+    title: "Stake 10",
+    stakeAmount: 100000,
+    isStaked: false,
+  },
+];
+
 
 export const tempCrowdFund: ICrowdFund[] = [
   {
