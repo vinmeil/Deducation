@@ -5,15 +5,17 @@ import { Transaction } from "@mysten/sui/transactions";
 import { BsFillLightningChargeFill } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import { mockUsers } from "@/data/mockData";
-import { validatorOptions } from "@/constants";
 import { PACKAGE_ID, KILAT_COIN_TYPE, KILAT_COIN_OBJECT_ID, KILAT_WALLET_ADDRESS } from "../constants/util.ts";
-import { FaPlay, FaStop } from "react-icons/fa";
 import Modal from "../components/Modal";
 import { Ed25519Keypair } from "@mysten/sui/keypairs/ed25519";
 import { decodeSuiPrivateKey } from "@mysten/sui/cryptography";
 import dotenv from "dotenv";
 import UserModal from "../components/UserModal.tsx";
 import TransactionModal from "../components/TransactionModal.tsx";
+import ValidatorCard from "../components/ValidatorCard.tsx";
+import Header from "../components/Header.tsx";
+import BatteryPercentage from "../components/BatteryPercentage.tsx";
+import VerticalBattery from "../components/VerticalBattery.tsx";
 
 dotenv.config();
 
@@ -133,137 +135,54 @@ export default function Home() {
   }, [suiClient, account])
 
   return (
-    <div className="flex flex-col m-3 h-full">
-      {/* Name & Wallet */}
-      <div className="flex flex-row justify-between items-center gap-2">
-        <div className="flex flex-col truncate">
-        {account && isUserConnected && (
-          <>
-          <p className="font-bold truncate max-w-[200px]">{account.address}</p>
-          <p className="text-sm font-semibold">{Number(kilatBalance) / 10 ** 3} KLT</p>
-        </>)}
+    <div>
+      <div className="flex flex-col m-3 h-full">
+        <div>
+          {/* Name & Wallet */}
+          <Header account={account} isUserConnected={isUserConnected} kilatBalance={kilatBalance} />
+
+          {/* Battery Percentage */}
+          <BatteryPercentage user={user} batteryPercentage={batteryPercentage} />
         </div>
-        <ConnectButton />
-      </div>
 
-      {/* Battery Percentage */}
-      <div className="mt-[40px]">
-        {user?.battery && (
-          <div className="flex flex-col gap-6 w-full">
-            <div className="flex flex-col gap-2">
-              <div className="flex gap-2">
-                <p className="font-bold">Battery Percentage</p>
-              </div>
-              <div className="flex flex-row gap-3 w-full items-center">
-                <BsFillLightningChargeFill />
-                <div
-                  className="bg-secondary bg-opacity-20 rounded-lg h-[30px] p-1 relative w-full border border-secondary border-opacity-20 border-3"
-                >
-                  <span className="absolute inset-0 flex items-center justify-center mix-blend-difference">
-                    {batteryPercentage.toFixed(2)}%
-                  </span>
-                  <div
-                    className="bg-gradient-to-r from-primary to-accent h-full rounded-md"
-                    style={{ width: `${batteryPercentage}%` }}
-                  >
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
+        <div className="flex flex-col xs:flex-row">
+          {/* Validator & Personal Use */}
+          <VerticalBattery validatorPercentage={validatorPercentage} />
 
-      {/* Validator & Personal Use */}
-
-      <div className="flex flex-row justify-between items-center gap-5 mx-4 h-1/2 mt-[50px]">
-        <div className="flex flex-col justify-center w-1/2 items-center">
-          <p className="flex justify-center font-bold w-full text-xl">Validator</p>
-          <p className="flex items-center justify-center mix-blend-difference font-bold text-lg">
-              {validatorPercentage}%
-            </p>
+          {/* Validator Buttons */}
+          <ValidatorCard
+            user={user}
+            isValidatorRunning={isValidatorRunning}
+            setValidatorPercentage={setValidatorPercentage}
+            isUserConnected={isUserConnected}
+            setIsModalOpen={setIsModalOpen}
+            isModalOpen={isModalOpen}
+            setIsUserModalOpen={setIsUserModalOpen}
+            isUserModalOpen={isUserModalOpen}
+            />
         </div>
-        <div className="flex flex-col justify-center w-1/2 items-center">
-          <p className="flex justify-center font-bold w-full text-xl">Personal Use</p>
-          <p className="flex items-center justify-center mix-blend-difference font-bold text-lg">
-              {100 - validatorPercentage}%
-            </p>
-        </div>
+
+        <Modal
+          isOpen={isModalOpen}
+          setIsOpen={setIsModalOpen}
+          isValidatorRunning={isValidatorRunning}
+          setIsValidatorRunning={setIsValidatorRunning}
+          stopValidator={stopValidator}
+          // setIsTransactionModalOpen={setIsTransactionModalOpen}
+          // isTransactionModalOpen={isTransactionModalOpen}
+          handleValidatorStop={handleValidatorStop}
+          />
+
+        <UserModal isOpen = {isUserModalOpen} setIsOpen = {setIsUserModalOpen} />
+
+        <TransactionModal isOpen = {isTransactionModalOpen} setIsOpen = {setIsTransactionModalOpen} stakeReturns = {stakeReturns} />
+
+        <style jsx>{`
+          .glow-button {
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3), 0 0 30px rgba(255, 255, 255, 0.2);
+            }
+            `}</style>
       </div>
-
-      <div className="flex flex-row gap-5 mx-4 h-1/2 mt-10 relative">
-        <div className="bg-secondary bg-opacity-30 rounded-lg h-[300px] w-1/2 border-secondary border-opacity-20 border-3 p-3 flex flex-col justify-end">
-          <div className="w-full flex justify-center">
-            <div className="absolute top-[-20px] bg-secondary bg-opacity-30 h-[20px] w-[50px] rounded-t-lg"></div>
-          </div>
-          <div
-            className="bg-gradient-to-tr from-primary to-accent w-full rounded-md bottom-0"
-            style={{ height: `${validatorPercentage}%` }}
-          ></div>
-        </div>
-        <div className="bg-secondary bg-opacity-30 rounded-lg h-[300px] w-1/2 border-secondary border-opacity-20 border-3 p-3 flex flex-col justify-end">
-          <div className="w-full flex justify-center">
-            <div className="absolute top-[-20px] bg-secondary bg-opacity-30 h-[20px] w-[50px] rounded-t-lg"></div>
-          </div>
-          <div
-            className="bg-gradient-to-tr from-primary to-accent w-full rounded-md bottom-0"
-            style={{ height: `${(100 - validatorPercentage)}%` }}
-          ></div>
-        </div>
-      </div>
-
-      {/* Validator Buttons */}
-      <p className="mx-6 mt-8 font-semibold md:flex md:justify-center">Validator Share</p>
-      <div className="flex flex-row items-center justify-center gap-2 max-w-[400px] w-full max-sm:gap-2 max-sm:justify-between mt-3">
-        {validatorOptions.map((option, index) => {
-          const activeButtonClass = "rounded-lg bg-primary text-background px-3 py-1 w-[60px]";
-          const inactiveButtonClass = "rounded-lg bg-secondary bg-opacity-20 text-secondary py-1 w-[60px]";
-          const isButtonActive = (user.isLoaning && index < 2) || isValidatorRunning;
-
-          return (
-            <button
-              key={index}
-              className={isButtonActive ? inactiveButtonClass : activeButtonClass}
-              disabled={isButtonActive}
-              onClick={() => setValidatorPercentage(option.value)}
-            >
-              {option.value.toString()}%
-            </button>
-          )
-        })}
-      </div>
-
-      {/* Run Button */}
-      <div className="flex w-full justify-center items-center mt-10">
-        <button
-          className="flex flex-row items-center justify-center gap-2 px-4 py-2 bg-gradient-to-tl from-primary to-accent text-background rounded-lg glow-button font-semibold"
-          onClick={() => isUserConnected ? setIsModalOpen(!isModalOpen) : setIsUserModalOpen(!isUserModalOpen)}
-        >
-          {isValidatorRunning ? <FaStop /> : <FaPlay />}
-          {isValidatorRunning ? `Stop Validator` : `Run Validator` }
-        </button>
-      </div>
-
-      <Modal
-        isOpen={isModalOpen}
-        setIsOpen={setIsModalOpen}
-        isValidatorRunning={isValidatorRunning}
-        setIsValidatorRunning={setIsValidatorRunning}
-        stopValidator={stopValidator}
-        // setIsTransactionModalOpen={setIsTransactionModalOpen}
-        // isTransactionModalOpen={isTransactionModalOpen}
-        handleValidatorStop={handleValidatorStop}
-      />
-
-      <UserModal isOpen = {isUserModalOpen} setIsOpen = {setIsUserModalOpen} />
-
-      <TransactionModal isOpen = {isTransactionModalOpen} setIsOpen = {setIsTransactionModalOpen} stakeReturns = {stakeReturns} />
-
-      <style jsx>{`
-        .glow-button {
-          box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3), 0 0 30px rgba(255, 255, 255, 0.2);
-        }
-      `}</style>
     </div>
   );
 }

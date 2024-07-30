@@ -21,10 +21,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="flex flex-col h-full max-w-[400px]">
-      <body className={`${poppins.className} max-w-[400px]`}>
+    <html lang="en" className="flex flex-col h-full">
+      <body className={`${poppins.className}`}>
         <div className="blurry-circle bottom-left"></div>
-        <div className="pb-32 max-w-[400px]">
+        <div className="pb-32">
           {children}
         </div>
         <NavBar />
