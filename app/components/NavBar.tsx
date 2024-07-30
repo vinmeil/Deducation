@@ -2,9 +2,9 @@
 
 import Link from 'next/link'
 import { AiOutlineHome } from "react-icons/ai";
-import { RiRefund2Line } from "react-icons/ri";
 import { CgProfile } from "react-icons/cg";
 import { usePathname } from 'next/navigation';
+import { HiOutlineBanknotes } from "react-icons/hi2";
 
 export default function NavBar() {
     const pathName = usePathname();
@@ -12,7 +12,7 @@ export default function NavBar() {
   return (
     <>
     {pathName === '/' ? <DashboardNavBar /> : null}
-    {pathName === '/crowdfund' ? <CrowdfundNavBar /> : null}
+    {pathName === '/stake' ? <CrowdfundNavBar /> : null}
     {pathName === '/profile' ? <ProfileNavBar /> : null}
     </>
     );
@@ -25,9 +25,9 @@ function DashboardNavBar() {
             <Link href="/" className="flex gap-2 items-center w-full h-full p-1 justify-center border border-solid bg-[#26e400] bg-opacity-15 border-[#26e400] border-opacity-15 rounded-lg">
               <AiOutlineHome className="text-xl" style={{color:'#26e400', opacity:20}}/>
             </Link>
-            <Link href="crowdfund" className="flex gap-2 items-center w-full h-full p-2 justify-center"> 
-              <RiRefund2Line className="text-xl" style={{color:'white'}}/>
-              <h1 className="text-xs">Crowdfund</h1>
+            <Link href="stake" className="flex gap-2 items-center w-full h-full p-2 justify-center"> 
+              <HiOutlineBanknotes className="text-xl" style={{color:'white'}}/>
+              <h1 className="text-xs">Stake</h1>
             </Link>
             <Link href="profile" className="flex gap-2 items-center w-full h-full p-2 justify-center">
                 <CgProfile className="text-xl" style={{color:'white'}}/>
@@ -46,8 +46,8 @@ function CrowdfundNavBar() {
                 <AiOutlineHome className="text-xl" style={{color:'white'}}/>
                 <h1 className="text-xs">Dashboard</h1>
             </Link>
-            <Link href="crowdfund" className="flex gap-2 items-center w-full h-full p-1 justify-center border border-solid bg-[#26e400] bg-opacity-15 border-[#26e400] border-opacity-15 rounded-lg"> 
-                <RiRefund2Line className="text-xl" style={{color:'#26e400'}}/>
+            <Link href="stake" className="flex gap-2 items-center w-full h-full p-1 justify-center border border-solid bg-[#26e400] bg-opacity-15 border-[#26e400] border-opacity-15 rounded-lg"> 
+                <HiOutlineBanknotes className="text-xl" style={{color:'#26e400'}}/>
             </Link>
             <Link href="profile" className="flex gap-2 items-center w-full h-full p-2 justify-center">
                 <CgProfile className="text-xl" style={{color:'white'}}/>
@@ -66,9 +66,9 @@ function ProfileNavBar() {
                     <AiOutlineHome className="text-xl" style={{color:'white'}}/>
                     <h1 className="text-xs">Dashboard</h1>
                 </Link>
-                    <Link href="crowdfund" className="flex gap-2 items-center w-full h-full p-2 justify-center"> 
-                    <RiRefund2Line className="text-xl" style={{color:'white'}}/>
-                <h1 className="text-xs">Crowdfund</h1>
+                    <Link href="stake" className="flex gap-2 items-center w-full h-full p-2 justify-center"> 
+                    <HiOutlineBanknotes className="text-xl" style={{color:'white'}}/>
+                <h1 className="text-xs">Stake</h1>
                 </Link>
                 <Link href="profile" className="flex gap-2 items-center w-full h-full p-1 justify-center border border-solid bg-[#26e400] bg-opacity-15 border-[#26e400] border-opacity-15 rounded-lg">
                     <CgProfile className="text-xl" style={{color:'#26e400'}}/>
