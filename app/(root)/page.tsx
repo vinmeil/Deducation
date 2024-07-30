@@ -15,6 +15,7 @@ import ValidatorCard from "../components/ValidatorCard.tsx";
 import Header from "../components/Header.tsx";
 import BatteryPercentage from "../components/BatteryPercentage.tsx";
 import VerticalBattery from "../components/VerticalBattery.tsx";
+import HardwareCoverPage from "../components/HardwareCoverPage.tsx";
 
 dotenv.config();
 
@@ -22,15 +23,28 @@ export default function Home() {
   const user = mockUsers[1];
   const suiClient = useSuiClient();
   const account = useCurrentAccount();
-  const [isUserModalOpen, setIsUserModalOpen] = useState<boolean>(false);
-  const [isTransactionModalOpen, setIsTransactionModalOpen] = useState<boolean>(false);
+
+  const [isHardwareConnected, setIsHardwareConnected] = useState<boolean>(false);
+  
   const [batteryPercentage, setBatteryPercentage] = useState<number>(0);
   const [validatorPercentage, setValidatorPercentage] = useState<number>(0);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isValidatorRunning, setIsValidatorRunning] = useState<boolean>(false);
+
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isTransactionModalOpen, setIsTransactionModalOpen] = useState<boolean>(false);
+  const [isUserModalOpen, setIsUserModalOpen] = useState<boolean>(false);
+
   const [kilatBalance, setKilatBalance] = useState<number>(0);
   const [stakeReturns, setStakeReturns] = useState<number | undefined>(0);
   const [kilatCoinIcon, setKilatCoinIcon] = useState<string | null | undefined>("");
+
+  useEffect(() => {
+    const savedState = localStorage.getItem('isHardwareConnected');
+    if (savedState !== null) {
+      setIsHardwareConnected(JSON.parse(savedState));
+    }
+  }, []);
+
 
   async function stopValidator() {
     if (!account) return;
@@ -153,47 +167,51 @@ export default function Home() {
 
   return (
     <div>
-      <div className="flex flex-col m-3 h-full">
-        <div>
-          {/* Name & Wallet */}
-          <Header account={account} kilatBalance={kilatBalance} kilatCoinIcon={kilatCoinIcon} />
+      {isHardwareConnected ? (
+        <div className="flex flex-col m-3 h-full">
+          <div>
+            {/* Name & Wallet */}
+            <Header account={account} kilatBalance={kilatBalance} kilatCoinIcon={kilatCoinIcon} />
 
-          {/* Battery Percentage */}
-          <BatteryPercentage user={user} batteryPercentage={batteryPercentage} />
-        </div>
+            {/* Battery Percentage */}
+            <BatteryPercentage user={user} batteryPercentage={batteryPercentage} />
+          </div>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-10 sm:gap-[120px] sm:mt-[100px]">
-          {/* Validator & Personal Use */}
-          <VerticalBattery validatorPercentage={validatorPercentage} />
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-10 sm:gap-[120px] sm:mt-[100px]">
+            {/* Validator & Personal Use */}
+            <VerticalBattery validatorPercentage={validatorPercentage} />
 
-          {/* Validator Buttons */}
-          <ValidatorCard
-            user={user}
+            {/* Validator Buttons */}
+            <ValidatorCard
+              user={user}
+              isValidatorRunning={isValidatorRunning}
+              setValidatorPercentage={setValidatorPercentage}
+              account={account}
+              setIsModalOpen={setIsModalOpen}
+              isModalOpen={isModalOpen}
+              setIsUserModalOpen={setIsUserModalOpen}
+              isUserModalOpen={isUserModalOpen}
+              />
+          </div>
+
+          <Modal
+            isOpen={isModalOpen}
+            setIsOpen={setIsModalOpen}
             isValidatorRunning={isValidatorRunning}
-            setValidatorPercentage={setValidatorPercentage}
-            account={account}
-            setIsModalOpen={setIsModalOpen}
-            isModalOpen={isModalOpen}
-            setIsUserModalOpen={setIsUserModalOpen}
-            isUserModalOpen={isUserModalOpen}
+            setIsValidatorRunning={setIsValidatorRunning}
+            stopValidator={stopValidator}
+            handleValidatorStop={handleValidatorStop}
             />
+
+          <UserModal isOpen = {isUserModalOpen} setIsOpen = {setIsUserModalOpen} />
+
+          <TransactionModal isOpen = {isTransactionModalOpen} setIsOpen = {setIsTransactionModalOpen} stakeReturns = {stakeReturns} />
         </div>
-
-        <Modal
-          isOpen={isModalOpen}
-          setIsOpen={setIsModalOpen}
-          isValidatorRunning={isValidatorRunning}
-          setIsValidatorRunning={setIsValidatorRunning}
-          stopValidator={stopValidator}
-          // setIsTransactionModalOpen={setIsTransactionModalOpen}
-          // isTransactionModalOpen={isTransactionModalOpen}
-          handleValidatorStop={handleValidatorStop}
-          />
-
-        <UserModal isOpen = {isUserModalOpen} setIsOpen = {setIsUserModalOpen} />
-
-        <TransactionModal isOpen = {isTransactionModalOpen} setIsOpen = {setIsTransactionModalOpen} stakeReturns = {stakeReturns} />
+        ) : (
+          <div>
+            <HardwareCoverPage setIsHardwareConnected={setIsHardwareConnected} isHardwareConnected={isHardwareConnected} />
+          </div>
+        )}
       </div>
-    </div>
   );
 }
