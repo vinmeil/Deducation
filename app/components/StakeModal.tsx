@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import { Styles } from 'react-modal';
 import Image from 'next/image';
+import { getSuiAccounts} from '../utils/graphql';
+import { ConnectButton, useWallets, useAccounts , useCurrentWallet, useCurrentAccount} from '@mysten/dapp-kit';
+import { Transaction } from "@mysten/sui/transactions";
+import { useSignAndExecuteTransaction, useSuiClient } from "@mysten/dapp-kit";
 
 type ModalProps = {
   isOpen: boolean;
@@ -14,6 +18,21 @@ type ModalProps = {
 
 const StakeModal = ({ isOpen, setIsOpen, isStaked, setIsStaked, stakeAmount, setStakeAmount }: ModalProps) => {
   const [inputAmount, setInputAmount] = useState<String>("");
+  const [stakeAccount, setStakeAccount] = useState<String>("");
+  const account = useCurrentAccount();
+  const suiClient = useSuiClient();
+  const { mutate: signAndExecute } = useSignAndExecuteTransaction({
+      execute: async ({ bytes, signature }) =>
+      await suiClient.executeTransactionBlock({
+          transactionBlock: bytes,
+          signature,
+          options: {
+          // Raw effects are required so the effects can be reported back to the wallet
+          showRawEffects: true,
+          showEffects: true,
+          },
+      }),
+  });
 
   const customStyles = {
     overlay: {
@@ -33,11 +52,66 @@ const StakeModal = ({ isOpen, setIsOpen, isStaked, setIsStaked, stakeAmount, set
     },
   };
 
-  const handleStake = () => {
-    setStakeAmount(stakeAmount + Number(inputAmount));
-    setInputAmount("");
-    setIsStaked(!isStaked);
-    setIsOpen(false);
+  const stake = async () =>{
+    if(account){
+      const suiAccounts = await getSuiAccounts(account.address);
+      if(suiAccounts){
+        const tx = new Transaction();
+        tx.moveCall({
+            arguments: [tx.object(suiAccounts[0].address), tx.pure.u64(parseFloat(inputAmount.toString()) * 10**9)],
+            target: `0x0ff6ebb0750bfda9dcf4edcd33838a52fa9f95084a2cc22f6078bf2c364987d7::staking::stake`,
+        });
+        signAndExecute({
+            transaction: tx,
+        },{onSuccess: async (result)=>{
+            const objectId = result.effects?.created?.[0]?.reference?.objectId;
+            if(objectId){
+              setStakeAmount(stakeAmount + Number(inputAmount));
+              setIsStaked(true);
+              setStakeAccount(objectId);
+              console.log("Staking Account:", objectId);
+            }
+        }});
+        setInputAmount("");
+        setIsOpen(false);
+      }else{
+        alert("No Balance Detected");
+      }
+    }else{
+      alert("Wallet Not Connected");
+    }
+  }
+
+  const unstake = async () =>{
+    if(account){
+      if(stakeAccount){
+        const tx = new Transaction();
+        tx.moveCall({
+          arguments: [tx.object(stakeAccount.toString()), tx.object('0x608944a6b57cc8618460c8319327bb166777f9f7ca3ae418b4b3c142a76579f5')],
+          target: `0x0ff6ebb0750bfda9dcf4edcd33838a52fa9f95084a2cc22f6078bf2c364987d7::staking::unstake`,
+        });
+        signAndExecute({
+            transaction: tx,
+        },{onSuccess: async (result)=>{
+          setIsStaked(false);
+          setInputAmount("");
+          setIsOpen(false);
+        }});
+      }else{
+        alert("Error Happened")
+      }
+    }else{
+      alert("Wallet Not Connected")
+    }
+  }
+
+  
+  const handleStake = async () => {
+    if(isStaked){
+      await unstake();
+    }else{
+      await stake();
+    }
   };
 
   return (
