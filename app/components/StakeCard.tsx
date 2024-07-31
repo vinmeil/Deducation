@@ -24,7 +24,7 @@ const StakeCard = ({stake}: StakeCardProps) => {
     }
 
 return (
-    <div className="flex justify-center animated-border">
+    <div className="mt-5 flex justify-center animated-border">
         <div className="flex bg-white bg-opacity-5 rounded-xl w-full">
             <div className="p-5 flex flex-col gap-4 w-full">
                 <p className="font-semibold">{stake.title}</p>

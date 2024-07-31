@@ -32,11 +32,11 @@ export const mockUsers: IUser[] = [
 export const mockStakes: IStake[] = [
   {
     _id: "1",
-    title: "Validator 1",
+    title: "Stake your SUI",
     stakeAmount: 827504,
     isStaked: false,
   },
-  {
+  /* {
     _id: "2",
     title: "Validator 2",
     stakeAmount: 786403,
@@ -71,7 +71,7 @@ export const mockStakes: IStake[] = [
     title: "Validator 7",
     stakeAmount: 355825,
     isStaked: false,
-  },
+  }, */
 ];
 
 
