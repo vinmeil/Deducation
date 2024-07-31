@@ -6,7 +6,6 @@ import { getSuiAccounts} from '../utils/graphql';
 import { useCurrentAccount} from '@mysten/dapp-kit';
 import { Transaction } from "@mysten/sui/transactions";
 import { useSignAndExecuteTransaction, useSuiClient } from "@mysten/dapp-kit";
-import { STAKING_ADDRESS, STAKING_MANAGER } from '../constants/util';
 
 type ModalProps = {
   isOpen: boolean;
@@ -58,21 +57,22 @@ const StakeModal = ({ isOpen, setIsOpen, isStaked, setIsStaked, stakeAmount, set
       const suiAccounts = await getSuiAccounts(account.address);
       if(suiAccounts){
         const tx = new Transaction();
+        console.log("SUI Account is:", suiAccounts[0]);
         tx.moveCall({
-            arguments: [tx.object(suiAccounts[0].address), tx.pure.u64(parseFloat(inputAmount.toString()) * 10**9)],
-            target: `${STAKING_ADDRESS}::staking::stake`,
+          arguments: [tx.object(suiAccounts[0].address), tx.pure.u64(1000000)],
+          target: `0x0ff6ebb0750bfda9dcf4edcd33838a52fa9f95084a2cc22f6078bf2c364987d7::staking::stake`,
         });
         signAndExecute({
             transaction: tx,
         },{onSuccess: async (result)=>{
             const objectId = result.effects?.created?.[0]?.reference?.objectId;
             if(objectId){
-              setStakeAmount(stakeAmount + Number(inputAmount));
-              setIsStaked(true);
               setStakeAccount(objectId);
               console.log("Staking Account:", objectId);
             }
         }});
+        setStakeAmount(stakeAmount + Number(inputAmount));
+        setIsStaked(true);
         setInputAmount("");
         setIsOpen(false);
       }else{
@@ -87,9 +87,11 @@ const StakeModal = ({ isOpen, setIsOpen, isStaked, setIsStaked, stakeAmount, set
     if(account){
       if(stakeAccount){
         const tx = new Transaction();
+        
+        
         tx.moveCall({
-          arguments: [tx.object(stakeAccount.toString()), tx.object(`${STAKING_MANAGER}`)],
-          target: `${STAKING_ADDRESS}::staking::unstake`,
+          arguments: [tx.object(stakeAccount.toString()), tx.object(`0x608944a6b57cc8618460c8319327bb166777f9f7ca3ae418b4b3c142a76579f5`)],
+          target: `0x0ff6ebb0750bfda9dcf4edcd33838a52fa9f95084a2cc22f6078bf2c364987d7::staking::stake`,
         });
         signAndExecute({
             transaction: tx,
