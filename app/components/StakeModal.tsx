@@ -6,6 +6,7 @@ import { getSuiAccounts} from '../utils/graphql';
 import { useCurrentAccount} from '@mysten/dapp-kit';
 import { Transaction } from "@mysten/sui/transactions";
 import { useSignAndExecuteTransaction, useSuiClient } from "@mysten/dapp-kit";
+import { STAKING_ADDRESS, STAKING_MANAGER } from '../constants/util';
 
 type ModalProps = {
   isOpen: boolean;
@@ -59,7 +60,7 @@ const StakeModal = ({ isOpen, setIsOpen, isStaked, setIsStaked, stakeAmount, set
         const tx = new Transaction();
         tx.moveCall({
             arguments: [tx.object(suiAccounts[0].address), tx.pure.u64(parseFloat(inputAmount.toString()) * 10**9)],
-            target: `0x0ff6ebb0750bfda9dcf4edcd33838a52fa9f95084a2cc22f6078bf2c364987d7::staking::stake`,
+            target: `${STAKING_ADDRESS}::staking::stake`,
         });
         signAndExecute({
             transaction: tx,
@@ -87,8 +88,8 @@ const StakeModal = ({ isOpen, setIsOpen, isStaked, setIsStaked, stakeAmount, set
       if(stakeAccount){
         const tx = new Transaction();
         tx.moveCall({
-          arguments: [tx.object(stakeAccount.toString()), tx.object('0x608944a6b57cc8618460c8319327bb166777f9f7ca3ae418b4b3c142a76579f5')],
-          target: `0x0ff6ebb0750bfda9dcf4edcd33838a52fa9f95084a2cc22f6078bf2c364987d7::staking::unstake`,
+          arguments: [tx.object(stakeAccount.toString()), tx.object(`${STAKING_MANAGER}`)],
+          target: `${STAKING_ADDRESS}::staking::unstake`,
         });
         signAndExecute({
             transaction: tx,
